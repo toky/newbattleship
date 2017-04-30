@@ -5,8 +5,8 @@ class DataManagerDecorator
 {
 	protected function __construct()
 	{
-		$arrayRegistry = new \App\Registry\ArrayRegistry();
-		$sessionRegistry = new \App\Registry\SessionRegistry();
+		$arrayRegistry = \App\Registry\ArrayRegistry::getInstance;
+		$sessionRegistry = \App\Registry\SessionRegistry::getInstance;
 	}
 
 	public static function set($key, $value)
