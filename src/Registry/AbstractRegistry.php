@@ -3,7 +3,7 @@ namespace App\Registry;
 
 class AbstractRegistry
 {
-	protected static $instance  = null;
+	protected static $instance = null;
 
 	public static function getInstance()
 	{
