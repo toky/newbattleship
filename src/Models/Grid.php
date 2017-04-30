@@ -42,6 +42,10 @@ class Grid
         if (!isset($_SESSION['grid'])) {
             $_SESSION['grid'] = $this->generateGrid();
         }
+
+        $dataManager = new \App\Decorator\DataManagerDecorator();
+        $dataManager->set('test', "alabala");
+        var_dump($dataManager->get('test'));
     }
 
     /**

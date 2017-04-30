@@ -1,15 +1,14 @@
 <?php
 namespace App\Registry;
 
-abstract class AbstractRegistry
+class AbstractRegistry
 {
 	protected static $instance  = null;
 
 	public static function getInstance()
-
 	{
-		if (self::$instance  === null){
-			self::$instance  = new AbstractRegistry();
+		if (self::$instance === null){
+			self::$instance = new AbstractRegistry();
 		}
 
 	    return self::$instance ;

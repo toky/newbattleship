@@ -7,7 +7,6 @@ class ArrayRegistry extends AbstractRegistry
 	private $data = array();
 
 	// save new data to the array registry
-
 	public function set($key, $value)
 	{
 		$this->data[$key] = $value;

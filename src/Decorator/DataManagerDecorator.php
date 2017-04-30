@@ -3,21 +3,19 @@ namespace App\Decorator;
 
 class DataManagerDecorator
 {
-	protected function __construct()
+	public function __construct()
 	{
-		$arrayRegistry = \App\Registry\ArrayRegistry::getInstance;
-		$sessionRegistry = \App\Registry\SessionRegistry::getInstance;
+		$arrayRegistry = \App\Registry\ArrayRegistry::getInstance();
+		$sessionRegistry = \App\Registry\SessionRegistry::getInstance();
 	}
 
 	public static function set($key, $value)
 	{
-
 		if (IS_CLIENT) {
 			$arrayRegistry->set($key, $value);
 			return;
 		}
 
-		
 		$sessionRegistry->set($key, $value);
 	}
 
