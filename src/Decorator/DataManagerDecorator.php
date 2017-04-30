@@ -24,10 +24,9 @@ class DataManagerDecorator
 	public static function get($key)
 	{
 		if (IS_CLIENT) {
-			$arrayRegistry->get($key, $value);
-			return;
+			return $arrayRegistry->get($key, $value);
 		}
-		$sessionRegistry->get($key, $value);
+		return $sessionRegistry->get($key, $value);
 	}
 
 	public static function clear()
