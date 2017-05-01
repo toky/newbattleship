@@ -12,7 +12,7 @@ define('GRID_COL', 10);
 define('BATTLESHIP_LENGHT', 5);
 define('DESTROYER_LENGHT', 4);
 define('BATTLESHIP_COUNT', 1);
-define('DESTROYERS_COUNT', 2);
+define('DESTROYERS_COUNT', 1);
 
 // Set constant is cli
 define('IS_CLIENT', php_sapi_name() == 'cli');

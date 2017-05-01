@@ -3,36 +3,40 @@ namespace App\Decorator;
 
 class DataManagerDecorator
 {
-	public function __construct()
-	{
-		$arrayRegistry = \App\Registry\ArrayRegistry::getInstance();
-		$sessionRegistry = \App\Registry\SessionRegistry::getInstance();
-	}
 
-	public static function set($key, $value)
+	public static function set($key, $value, $secondKey = null, $thirdKey = false)
 	{
 		if (IS_CLIENT) {
-			$arrayRegistry->set($key, $value);
+			\App\Registry\ArrayRegistry::getInstance()->set($key, $value, $secondKey, $thirdKey);
 			return;
 		}
-
-		$sessionRegistry->set($key, $value);
+		\App\Registry\SessionRegistry::getInstance()->set($key, $value, $secondKey, $thirdKey);
 	}
 
-	public static function get($key)
+	public static function get($key, $secondKey = null, $thirdKey = false)
 	{
 		if (IS_CLIENT) {
-			return $arrayRegistry->get($key, $value);
+			return \App\Registry\ArrayRegistry::getInstance()->get($key, $secondKey, $thirdKey);
 		}
-		return $sessionRegistry->get($key, $value);
+		return \App\Registry\SessionRegistry::getInstance()->get($key, $secondKey, $thirdKey);
 	}
 
 	public static function clear()
 	{
+
 		if (IS_CLIENT) {
-			$arrayRegistry->clear();
+			\App\Registry\ArrayRegistry::getInstance()->clear();
 			return;
 		}
-		$sessionRegistry->clear();
+		\App\Registry\SessionRegistry::getInstance()->clear();
+	}
+
+	public static function unsetValue($key, $secondKey = false, $thirdKey = false)
+	{
+		if (IS_CLIENT) {
+			\App\Registry\ArrayRegistry::getInstance()->unsetValue($key, $secondKey, $thirdKey);
+			return;
+		}
+		\App\Registry\SessionRegistry::getInstance()->unsetValue($key, $secondKey, $thirdKey);
 	}
 }
