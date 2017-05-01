@@ -52,7 +52,7 @@ class GameFactory
         // Generate game grid
         $gridState = $grid->getGrid();
 
-        if (isset($input) && $input != "") { // Cehck for empty input
+        if (isset($input) && $input != "" && $input != "error") { // Cehck for empty input
                 if ($input == 'show') { // Check for back door command to show only ships
                     // Set only ships to grid
                     $gridState = $grid->getGrid('show');
@@ -65,8 +65,13 @@ class GameFactory
                 }
         } else { // If input is empty
                 // Set empty shot message
-                $shotMessage = "";
-                
+               
+                if($input == "error")
+                {
+                    $shotMessage = "Error: coordinates are out of range";
+                } else {
+                     $shotMessage = "";
+                }
                 // Get current grid
                 $gridState = $grid->getGrid();
         }
