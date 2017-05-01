@@ -72,7 +72,12 @@ class Grid
     public function getGrid($state = null)
     {
         if ($state == 'show') { // Check for cheat command, to show ships in game grid
-            $this->dataManager->set('gridWithShips', $this->showShipsOnGrid($this->dataManager->get('shipCoordinates')));
+            $this->dataManager->set(
+                'gridWithShips', 
+                $this->showShipsOnGrid(
+                    $this->dataManager->get('shipCoordinates')
+                    )
+                );
             return $this->dataManager->get('gridWithShips');
         } else { // return game grid with hidden ships
             return $this->dataManager->get('grid');
@@ -157,9 +162,12 @@ class Grid
         }
 
         if (!($this->dataManager->get('shipCoordinates', $this->countShips) !== null)) { // Check is set session with current ship
-            $this->dataManager->set('shipCoordinates', $shipCoordinates, $this->countShips);
+            $this->dataManager->set(
+                'shipCoordinates', 
+                $shipCoordinates, 
+                $this->countShips
+                );
         }
-
     }
 
     /**
@@ -283,6 +291,7 @@ class Grid
         
         return [$row, $col];
     }
+    
     /**
     * Shot ship on game grid
     *
@@ -321,7 +330,11 @@ class Grid
         $shotCoordinates = $shotCoordinates[0].";".$shotCoordinates[1];
 
         //Count non sunked ships
-        $shipCountRow = count(array_filter($this->dataManager->get('shipCoordinates')));
+        $shipCountRow = count(
+            array_filter(
+                $this->dataManager->get('shipCoordinates')
+                )
+            );
 
         foreach ($this->dataManager->get('shipCoordinates') as $key => $ship) {
 
@@ -330,13 +343,27 @@ class Grid
             if ($isHitShip) {// Is ship is hitted
                 // Remove coordinate from ship
                 $hitedShipCoordinate = array_search($shotCoordinates, $ship);
-                $this->dataManager->unsetValue('shipCoordinates', $key, $hitedShipCoordinate);
+                $this->dataManager->unsetValue(
+                    'shipCoordinates', 
+                    $key, 
+                    $hitedShipCoordinate
+                    );
 
                 // Set grid session without hitted coordiante
-                $this->dataManager->set('gridWithShips', $this->showShipsOnGrid($this->dataManager->get('shipCoordinates')));
+                $this->dataManager->set(
+                    'gridWithShips', 
+                    $this->showShipsOnGrid(
+                        $this->dataManager->get('shipCoordinates')
+                        )
+                    );
                 
                 // Set shot as successfully to game grid
-                $this->dataManager->set('grid', 'X', $shotRow + 1, $shotCol + 1);
+                $this->dataManager->set(
+                    'grid', 
+                    'X', 
+                    $shotRow + 1, 
+                    $shotCol + 1
+                    );
 
                 if (count($ship) == 1) { // Count current nonshoted ship coordinates
                     // Set message for sunked ship
@@ -361,7 +388,12 @@ class Grid
                 $message = "Miss";
                 
                 // Set sign on game grid for unsuccessful shot
-                $this->dataManager->set('grid', '-', $shotRow + 1, $shotCol + 1);
+                $this->dataManager->set(
+                    'grid', 
+                    '-', 
+                    $shotRow + 1, 
+                    $shotCol + 1
+                    );
             }
         }
 
