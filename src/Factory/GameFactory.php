@@ -68,7 +68,7 @@ class GameFactory
                
                 if($input == "error")
                 {
-                    $shotMessage = "Error: coordinates are out of range";
+                    $shotMessage = "Error: coordinates are not valid";
                 } else {
                      $shotMessage = "";
                 }
