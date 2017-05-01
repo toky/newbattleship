@@ -18,6 +18,7 @@ class Cli extends Controller
                     $gameVariables[0], 
                     $gameVariables[2]
                     );
+                
         while (true) { // Start infinity loop
                 echo "Enter coordinates (row, col), e.g. A5: ";
 

@@ -16,6 +16,7 @@ class Grid
     * @var int $countShots contain player's shots
     * @var int $sunkedShips contain sunked ships
     * @var int $finalMessage contain final game message
+    * @var session|array $dataManager manipulate stored data from data manager
     */
     private $row;
     private $col;
@@ -42,11 +43,8 @@ class Grid
         $this->countShips = 0;
         $this->matrix = $this->generateGrid();
         if (!$this->dataManager->get('grid')) {
-           // $_SESSION['grid'] = $this->generateGrid();
             $this->dataManager->set('grid', $this->generateGrid());
         }
-
-       
     }
 
     /**
@@ -74,12 +72,9 @@ class Grid
     public function getGrid($state = null)
     {
         if ($state == 'show') { // Check for cheat command, to show ships in game grid
-
-            //return $_SESSION['gridWithShips'] = $this->showShipsOnGrid($_SESSION['shipCoordinates']);
             $this->dataManager->set('gridWithShips', $this->showShipsOnGrid($this->dataManager->get('shipCoordinates')));
             return $this->dataManager->get('gridWithShips');
         } else { // return game grid with hidden ships
-            //return $_SESSION['grid'];
             return $this->dataManager->get('grid');
         }
     }
@@ -160,10 +155,7 @@ class Grid
                 $this->countShips++;
             }
         }
-        /*if (!isset($_SESSION["shipCoordinates"][$this->countShips])) { // Check is set session with current ship
-            // Set current ship coordinates to session
-            $_SESSION["shipCoordinates"][$this->countShips] = $shipCoordinates;
-        }*/
+
         if (!($this->dataManager->get('shipCoordinates', $this->countShips) !== null)) { // Check is set session with current ship
             $this->dataManager->set('shipCoordinates', $shipCoordinates, $this->countShips);
         }
@@ -304,17 +296,13 @@ class Grid
         $this->countShots++;
 
         //Cehck is first shot is stored
-        //if (!isset($_SESSION['countShots'])) {
         if (!($this->dataManager->get('countShots') !== null)) {
             // Set session with first shot
-            //$_SESSION['countShots'] = 1;
            $this->dataManager->set('countShots', 1);
         } else {
             // Increment Session with shots
-            //$_SESSION['countShots']++;
             $incrementShot = $this->dataManager->get('countShots') + 1;
             $this->dataManager->set('countShots', $incrementShot);
-            
         }
 
         // Declare empty variable for message
@@ -333,11 +321,8 @@ class Grid
         $shotCoordinates = $shotCoordinates[0].";".$shotCoordinates[1];
 
         //Count non sunked ships
-        //$shipCountRow = count(array_filter($_SESSION["shipCoordinates"]));
-
         $shipCountRow = count(array_filter($this->dataManager->get('shipCoordinates')));
 
-        //foreach ($_SESSION["shipCoordinates"] as $key => $ship) {
         foreach ($this->dataManager->get('shipCoordinates') as $key => $ship) {
 
             // Check is shot hit ship
@@ -345,15 +330,12 @@ class Grid
             if ($isHitShip) {// Is ship is hitted
                 // Remove coordinate from ship
                 $hitedShipCoordinate = array_search($shotCoordinates, $ship);
-                //unset($_SESSION["shipCoordinates"][$key][$hitedShipCoordinate]);
                 $this->dataManager->unsetValue('shipCoordinates', $key, $hitedShipCoordinate);
 
                 // Set grid session without hitted coordiante
-                //$_SESSION['gridWithShips'] = $this->showShipsOnGrid($_SESSION['shipCoordinates']);
-                //$this->dataManager->set('gridWithShips', $this->showShipsOnGrid($this->dataManager->get('shipCoordinates')));
+                $this->dataManager->set('gridWithShips', $this->showShipsOnGrid($this->dataManager->get('shipCoordinates')));
                 
                 // Set shot as successfully to game grid
-                //$_SESSION['grid'][$shotRow][$shotCol] = "X";
                 $this->dataManager->set('grid', 'X', $shotRow + 1, $shotCol + 1);
 
                 if (count($ship) == 1) { // Count current nonshoted ship coordinates
@@ -363,9 +345,7 @@ class Grid
                     if ($shipCountRow == 1) { // Cehck ship count, to check game status
 
                         // Set Final Message
-
                         $finalMessage = "Well done! You completed the game in " . $this->dataManager->get('countShots') . " shots";
-                        //$finalMessage = "Well done! You completed the game in " . $_SESSION['countShots'] . " shots";
                         $this->setFinalMessage($finalMessage);
                     }
                 } else { // If current shot hit ship
@@ -381,7 +361,6 @@ class Grid
                 $message = "Miss";
                 
                 // Set sign on game grid for unsuccessful shot
-                //$_SESSION['grid'][$shotRow][$shotCol] = "-";
                 $this->dataManager->set('grid', '-', $shotRow + 1, $shotCol + 1);
             }
         }

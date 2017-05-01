@@ -50,35 +50,7 @@ class SessionRegistry extends AbstractRegistry
 	// unset the state of the session registry by key
 	public function unsetValue($key, $secondKey = false, $thirdKey = false)
 	{
-		/*if($key && !($secondKey && $thirdKey))
-		{
-			unset($_SESSION[$key]);
-		}
-		if($key && $secondKey && !($thirdKey))
-		{
-			unset($_SESSION[$key][$secondKey]);
-		}
-		if($key && $secondKey && $thirdKey)
-		{
-			unset($_SESSION[$key][$secondKey][$thirdKey]);
-		}*/
 		unset($_SESSION[$key][$secondKey][$thirdKey]);
-		/*if($key && !$secondKey)
-		{
-			echo "1";
-			unset($_SESSION[$key]);
-		}
-		if($key && $secondKey && $thirdKey !== false)
-		{
-				
-			
-			unset($_SESSION[$key][$secondKey]);
-		}
-		if($key && $secondKey && $thirdKey){
-			echo "3";
-			unset($_SESSION[$key][$secondKey][$thirdKey]);
-		}*/
-
 	}
 
 	// clear the state of the session registry

@@ -1,5 +1,4 @@
 <?php
-//session_start();
 // Require autloader
 require_once("./vendor/autoload.php");
 
