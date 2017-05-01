@@ -9,6 +9,15 @@ class Cli extends Controller
 {
     public function index()
     {
+        $gameVariables = \App\Factory\GameFactory::buildGame('');
+
+                // Call static showGame to show game
+                \App\Factory\GameFactory::showGame(
+                    $gameVariables[1], 
+                    GRID_ROW, GRID_COL, 
+                    $gameVariables[0], 
+                    $gameVariables[2]
+                    );
         while (true) { // Start infinity loop
                 echo "Enter coordinates (row, col), e.g. A5: ";
 

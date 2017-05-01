@@ -25,6 +25,8 @@ class SessionRegistry extends AbstractRegistry
 			return;
 		}
 		if($key && $secondKey && $thirdKey){
+			$secondKey -=1;
+			$thirdKey -=1;
 			$_SESSION[$key][$secondKey][$thirdKey] = $value;
 			return;
 		}

@@ -354,7 +354,7 @@ class Grid
                 
                 // Set shot as successfully to game grid
                 //$_SESSION['grid'][$shotRow][$shotCol] = "X";
-                $this->dataManager->set('grid', 'X', $shotRow, $shotCol);
+                $this->dataManager->set('grid', 'X', $shotRow + 1, $shotCol + 1);
 
                 if (count($ship) == 1) { // Count current nonshoted ship coordinates
                     // Set message for sunked ship
@@ -382,7 +382,7 @@ class Grid
                 
                 // Set sign on game grid for unsuccessful shot
                 //$_SESSION['grid'][$shotRow][$shotCol] = "-";
-                $this->dataManager->set('grid', '-', $shotRow, $shotCol);
+                $this->dataManager->set('grid', '-', $shotRow + 1, $shotCol + 1);
             }
         }
 

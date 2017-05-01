@@ -21,6 +21,8 @@ class ArrayRegistry extends AbstractRegistry
 			
 		}
 		if($key && $secondKey && $thirdKey){
+			$secondKey -=1;
+			$thirdKey -=1;
 			$this->data[$key][$secondKey][$thirdKey] = $value;
 			
 		}
