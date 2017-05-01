@@ -283,13 +283,7 @@ class Grid
     */
     private function inputToCoordinates($input)
     {
-        // Conver first segment of input to int
-        $row = (ord(strtoupper(substr($input, 0, 1))) - 64) - 1;
-
-        // Cut second segment of input
-        $col = (substr($input, 1) * 1) - 1;
-        
-        return [$row, $col];
+        return $input;
     }
     
     /**

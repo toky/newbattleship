@@ -9,14 +9,12 @@ class Web extends Controller
 {
     public function index()
     {
-        if (isset($_POST['coord']) && $_POST['coord'] != "") {
-            $input = $_POST['coord'];
-        } else {
-            $input = "";
-        }
 
+        $input = new \App\Decorator\InputDecorator();
+        $input->set("coord", GRID_ROW, GRID_COL);
+        
         // Call static buildGame to create game
-        $gameVariables = \App\Factory\GameFactory::buildGame($input);
+        $gameVariables = \App\Factory\GameFactory::buildGame($input->get());
         
         // Call static showGame to show game
         \App\Factory\GameFactory::showGame(

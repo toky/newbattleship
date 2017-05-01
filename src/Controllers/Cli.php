@@ -9,7 +9,9 @@ class Cli extends Controller
 {
     public function index()
     {
-        $gameVariables = \App\Factory\GameFactory::buildGame('');
+         $input = new \App\Decorator\InputDecorator();
+        
+        $gameVariables = \App\Factory\GameFactory::buildGame($input->get());
 
                 // Call static showGame to show game
                 \App\Factory\GameFactory::showGame(
@@ -23,10 +25,10 @@ class Cli extends Controller
                 echo "Enter coordinates (row, col), e.g. A5: ";
 
                 // Get inputed coordinates
-                $input = trim(fgets(STDIN, 1024));
-
+                $cliInput = fgets(STDIN, 1024);
+                $input->set($cliInput, GRID_ROW, GRID_COL);
                 // Call static buildGame to create game
-                $gameVariables = \App\Factory\GameFactory::buildGame($input);
+                $gameVariables = \App\Factory\GameFactory::buildGame($input->get());
 
                 // Call static showGame to show game
                 \App\Factory\GameFactory::showGame(
