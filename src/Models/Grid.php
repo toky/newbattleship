@@ -13,7 +13,6 @@ class Grid
     * @var int $ships contain rows of grid
     * @var mixed [] $matrix contain game grid
     * @var int $countShips contain ships count
-    * @var int $countShots contain player's shots
     * @var int $sunkedShips contain sunked ships
     * @var int $finalMessage contain final game message
     * @var session|array $dataManager manipulate stored data from data manager
@@ -23,7 +22,6 @@ class Grid
     private $ships;
     private $matrix;
     protected $countShips;
-    protected $countShots;
     protected $sunkedShips;
     private $finalMessage;
     private $dataManager;
@@ -35,8 +33,6 @@ class Grid
     public function __construct($gridDimension)
     {
         $this->dataManager = new \App\Decorator\DataManagerDecorator();
-        $this->sunkedShips = 0;
-        $this->countShots = 0;
         $this->ships=[];
         $this->row = $gridDimension[0];
         $this->col = $gridDimension[1];
@@ -194,25 +190,6 @@ class Grid
     }
 
     /**
-    * Put all ships to game grid
-    *
-    * @param array $grid
-    * @param array $shipsCoordinates
-    */
-    private function putShipsIntoGrid($grid, $shipsCoordinates)
-    {
-        $matrix = $grid;
-        foreach ($shipsCoordinates as $key => $ship) {
-            foreach ($ship as $key => $shipCoordinates) {
-                $explodedShipCoordinates = explode(';', $shipCoordinates);
-                $row = $explodedShipCoordinates[0];
-                $col = $explodedShipCoordinates[1];
-                $this->matrix[$row][$col] = "X";
-            }
-        }
-    }
-
-    /**
     * Show ships on game grid
     *
     * @param array $shipsCoordinates
@@ -295,18 +272,8 @@ class Grid
     */
     public function shot($inputShotCoordinates)
     {
-        // Increment shot count
-        $this->countShots++;
-
-        //Cehck is first shot is stored
-        if (!($this->dataManager->get('countShots') !== null)) {
-            // Set session with first shot
-           $this->dataManager->set('countShots', 1);
-        } else {
-            // Increment Session with shots
-            $incrementShot = $this->dataManager->get('countShots') + 1;
-            $this->dataManager->set('countShots', $incrementShot);
-        }
+        //Count shots
+        $this->countShots();
 
         // Declare empty variable for message
         $message = "";
@@ -336,29 +303,8 @@ class Grid
             $isHitShip = in_array($shotCoordinates, $ship);
             if ($isHitShip) {// Is ship is hitted
                 // Remove coordinate from ship
-                $hitedShipCoordinate = array_search($shotCoordinates, $ship);
-                $this->dataManager->unsetValue(
-                    'shipCoordinates',
-                    $key,
-                    $hitedShipCoordinate
-                    );
-
-                // Set grid session without hitted coordiante
-                $this->dataManager->set(
-                    'gridWithShips',
-                    $this->showShipsOnGrid(
-                        $this->dataManager->get('shipCoordinates')
-                        )
-                    );
+                $this->hitShip($shotCoordinates, $ship, $key, $shotRow, $shotCol);
                 
-                // Set shot as successfully to game grid
-                $this->dataManager->set(
-                    'grid',
-                    'X',
-                    $shotRow + 1,
-                    $shotCol + 1
-                    );
-
                 if (count($ship) == 1) { // Count current nonshoted ship coordinates
                     // Set message for sunked ship
                     $message = "Sunk";
@@ -392,5 +338,43 @@ class Grid
         }
 
         return $message;
+    }
+
+    protected function countShots()
+    {
+        if (!($this->dataManager->get('countShots') !== null)) {
+            // Set session with first shot
+           $this->dataManager->set('countShots', 1);
+        } else {
+            // Increment Session with shots
+            $incrementShot = $this->dataManager->get('countShots') + 1;
+            $this->dataManager->set('countShots', $incrementShot);
+        }
+    }
+
+    protected function hitShip($shotCoordinates, $ship, $key, $shotRow, $shotCol)
+    {
+        $hitedShipCoordinate = array_search($shotCoordinates, $ship);
+                $this->dataManager->unsetValue(
+                    'shipCoordinates',
+                    $key,
+                    $hitedShipCoordinate
+                    );
+
+                // Set grid session without hitted coordiante
+                $this->dataManager->set(
+                    'gridWithShips',
+                    $this->showShipsOnGrid(
+                        $this->dataManager->get('shipCoordinates')
+                        )
+                    );
+                
+                // Set shot as successfully to game grid
+                $this->dataManager->set(
+                    'grid',
+                    'X',
+                    $shotRow + 1,
+                    $shotCol + 1
+                    );
     }
 }

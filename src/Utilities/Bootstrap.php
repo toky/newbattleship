@@ -67,7 +67,7 @@ class Bootstrap
     protected function getRout()
     {
         if (isset($_GET['url'])) {
-            $params = array();
+            $params = [];
             $params = explode("/", $_GET['url']);
             $controller = ucwords($params[0]);
             
@@ -100,6 +100,6 @@ class Bootstrap
         //Create new instance of Class
         $instance = $class->newInstance();
 
-        call_user_func(array($instance, $action));
+        call_user_func([$instance, $action]);
     }
 }

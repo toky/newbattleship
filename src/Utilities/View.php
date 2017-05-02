@@ -14,7 +14,7 @@ class View
     */
     public $renderFile;
     protected $file;
-    protected $date = array();
+    protected $date = [];
     
     /**
     * Set date to template
@@ -62,7 +62,7 @@ class View
     public function render()
     {
         if (!file_exists($this->renderFile)) {
-            throw new \App\Utilities\Exceptions("Missing sub template.");
+            throw new \Exception("Missing sub template.");
         }
         extract($this->date);
         ob_start();
@@ -95,7 +95,7 @@ class View
     public function output()
     {
         if (!file_exists($this->file)) {
-            throw new \App\Utilities\Exceptions("Missing template.");
+            throw new \Exception("Missing template.");
         }
         extract($this->date);
         ob_start();

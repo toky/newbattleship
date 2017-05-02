@@ -3,7 +3,7 @@ namespace App\Registry;
 
 class ArrayRegistry extends AbstractRegistry
 {
-    private $data = array();
+    private $data = [];
 
     // save new data to the array registry
     public function set($key, $value, $secondKey = false, $thirdKey = false)
@@ -37,7 +37,7 @@ class ArrayRegistry extends AbstractRegistry
     // clear the state of the array registry
     public function clear()
     {
-        $this->data = array();
+        $this->data = [];
     }
 
     // unset the state of the array registry by key
