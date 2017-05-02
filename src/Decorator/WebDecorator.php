@@ -27,19 +27,19 @@ class WebDecorator
     * @param string $finalMessage;
     */
     public function __construct(
-        $gridState, 
-        $gridRow, 
-        $gridCol, 
-        $shotMessage, 
+        $gridState,
+        $gridRow,
+        $gridCol,
+        $shotMessage,
         $finalMessage
-        ){
-            $this->gridState = $gridState;
-            $this->gridCol = $gridCol;
-            $this->gridRow = $gridRow;
-            $this->shotMessage = $shotMessage;
-            $this->finalMessage = $finalMessage;
-            $this->view = new \App\Utilities\View();
-        }
+        ) {
+        $this->gridState = $gridState;
+        $this->gridCol = $gridCol;
+        $this->gridRow = $gridRow;
+        $this->shotMessage = $shotMessage;
+        $this->finalMessage = $finalMessage;
+        $this->view = new \App\Utilities\View();
+    }
 
     /**
     * Set variables to template

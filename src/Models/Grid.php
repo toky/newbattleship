@@ -73,7 +73,7 @@ class Grid
     {
         if ($state == 'show') { // Check for cheat command, to show ships in game grid
             $this->dataManager->set(
-                'gridWithShips', 
+                'gridWithShips',
                 $this->showShipsOnGrid(
                     $this->dataManager->get('shipCoordinates')
                     )
@@ -163,8 +163,8 @@ class Grid
 
         if (!($this->dataManager->get('shipCoordinates', $this->countShips) !== null)) { // Check is set session with current ship
             $this->dataManager->set(
-                'shipCoordinates', 
-                $shipCoordinates, 
+                'shipCoordinates',
+                $shipCoordinates,
                 $this->countShips
                 );
         }
@@ -338,14 +338,14 @@ class Grid
                 // Remove coordinate from ship
                 $hitedShipCoordinate = array_search($shotCoordinates, $ship);
                 $this->dataManager->unsetValue(
-                    'shipCoordinates', 
-                    $key, 
+                    'shipCoordinates',
+                    $key,
                     $hitedShipCoordinate
                     );
 
                 // Set grid session without hitted coordiante
                 $this->dataManager->set(
-                    'gridWithShips', 
+                    'gridWithShips',
                     $this->showShipsOnGrid(
                         $this->dataManager->get('shipCoordinates')
                         )
@@ -353,9 +353,9 @@ class Grid
                 
                 // Set shot as successfully to game grid
                 $this->dataManager->set(
-                    'grid', 
-                    'X', 
-                    $shotRow + 1, 
+                    'grid',
+                    'X',
+                    $shotRow + 1,
                     $shotCol + 1
                     );
 
@@ -383,9 +383,9 @@ class Grid
                 
                 // Set sign on game grid for unsuccessful shot
                 $this->dataManager->set(
-                    'grid', 
-                    '-', 
-                    $shotRow + 1, 
+                    'grid',
+                    '-',
+                    $shotRow + 1,
                     $shotCol + 1
                     );
             }

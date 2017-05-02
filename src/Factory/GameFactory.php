@@ -2,7 +2,7 @@
 namespace App\Factory;
 
 /**
-* class GameFactory 
+* class GameFactory
 */
 
 class GameFactory
@@ -66,11 +66,10 @@ class GameFactory
         } else { // If input is empty
                 // Set empty shot message
                
-                if($input == "error")
-                {
+                if ($input == "error") {
                     $shotMessage = "Error: coordinates are not valid";
                 } else {
-                     $shotMessage = "";
+                    $shotMessage = "";
                 }
                 // Get current grid
                 $gridState = $grid->getGrid();
@@ -81,30 +80,30 @@ class GameFactory
     /**
     * Show game grid
     *
-    * @param 
+    * @param
     */
     public static function showGame(
-        $gridState, 
-        $gridRow, 
-        $gridCol, 
-        $shotMessage, 
+        $gridState,
+        $gridRow,
+        $gridCol,
+        $shotMessage,
         $finalMessage
-        ){
-            // Create instance of Decorate
+        ) {
+        // Create instance of Decorate
             $decorator = new \App\Decorator\WebDecorator(
-                $gridState, 
-                $gridRow, 
-                $gridCol, 
-                $shotMessage, 
+                $gridState,
+                $gridRow,
+                $gridCol,
+                $shotMessage,
                 $finalMessage);
 
-            if (IS_CLIENT) { // Check if client is Cli (Console)
+        if (IS_CLIENT) { // Check if client is Cli (Console)
                 // Call decorator for cli
                 $decorator->cliDecorate();
-                return;
-            }
+            return;
+        }
             
             // Call decorator for web
             $decorator->webDecorate();
-        }
+    }
 }

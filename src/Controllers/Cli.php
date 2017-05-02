@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 /**
-* class Web - representation game logic for cli (console) 
+* class Web - representation game logic for cli (console)
 *
 */
 class Cli extends Controller
@@ -14,10 +14,10 @@ class Cli extends Controller
         
         // Call static showGame to show game
         \App\Factory\GameFactory::showGame(
-            $gameVariables[1], 
-            GRID_ROW, 
-            GRID_COL, 
-            $gameVariables[0], 
+            $gameVariables[1],
+            GRID_ROW,
+            GRID_COL,
+            $gameVariables[0],
             $gameVariables[2]
             );
                 
@@ -32,9 +32,9 @@ class Cli extends Controller
             
             // Call static showGame to show game
             \App\Factory\GameFactory::showGame(
-                $gameVariables[1], 
-                GRID_ROW, GRID_COL, 
-                $gameVariables[0], 
+                $gameVariables[1],
+                GRID_ROW, GRID_COL,
+                $gameVariables[0],
                 $gameVariables[2]
                 );
                 

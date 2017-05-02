@@ -2,14 +2,13 @@
 namespace App\Controllers;
 
 /**
-* class Web - representation game logic for web 
+* class Web - representation game logic for web
 *
 */
 class Web extends Controller
 {
     public function index()
     {
-
         $input = new \App\Decorator\InputDecorator();
         $input->set("coord", GRID_ROW, GRID_COL);
         
@@ -18,9 +17,9 @@ class Web extends Controller
         
         // Call static showGame to show game
         \App\Factory\GameFactory::showGame(
-            $gameVariables[1], 
-            GRID_ROW, GRID_COL, 
-            $gameVariables[0], 
+            $gameVariables[1],
+            GRID_ROW, GRID_COL,
+            $gameVariables[0],
             $gameVariables[2]
             );
     }
