@@ -11,7 +11,7 @@ class Grid
     * @var int $row contain rows of grid
     * @var int $column contain col of grid
     * @var int $ships contain rows of grid
-    * @var mixed [] $matrix contain game grid
+    * @var mixed array $matrix contain game grid
     * @var int $countShips contain ships count
     * @var int $sunkedShips contain sunked ships
     * @var int $finalMessage contain final game message
@@ -145,13 +145,11 @@ class Grid
             if ($this->isShipOverlap($this->ships, $shipCoordinates)) { // Cechk ship coordinate for overlaping with others ship
                 // Clear ship from ship array
                 $this->ships = [];
-
                 // Call again same method to generate new coordinates
                 $this->addShip($shipSize);
             } else {
                 // Add Coordinate to ships array to store him
                 $this->ships[] = $shipCoordinates;
-
                 // Increment ships count
                 $this->countShips++;
             }
@@ -301,48 +299,38 @@ class Grid
 
             // Check is shot hit ship
             $isHitShip = in_array($shotCoordinates, $ship);
-            if ($isHitShip) {// Is ship is hitted
+            if ($isHitShip) {// If ship is hitted
                 // Remove coordinate from ship
-                $this->hitShip($shotCoordinates, $ship, $key, $shotRow, $shotCol);
-                
-                if (count($ship) == 1) { // Count current nonshoted ship coordinates
-                    // Set message for sunked ship
+                $message = $this->shotHitShip(
+                    $shotCoordinates, 
+                    $ship, 
+                    $key, 
+                    $shotRow, 
+                    $shotCol
+                    );
+
+                if($this->isShipSunked($ship, $shipCountRow)){
                     $message = "Sunk";
-
-                    if ($shipCountRow == 1) { // Cehck ship count, to check game status
-
-                        // Set Final Message
-                        $finalMessage = "Well done! You completed the game in " . $this->dataManager->get('countShots') . " shots";
-                        $this->setFinalMessage($finalMessage);
-                    }
-                } else { // If current shot hit ship
-
-                    // Set message for successfully hited ship
-                    $message = "Hit";
+                    $this->checkGameStatus($shipCountRow);
                 }
-                
                 // Stop executing script
                 break;
             } else { // Set message for unsuccessful shot
-                // Set message
-                $message = "Miss";
-                
-                // Set sign on game grid for unsuccessful shot
-                $this->dataManager->set(
-                    'grid',
-                    '-',
-                    $shotRow + 1,
-                    $shotCol + 1
-                    );
+                $message = $this->shotMissShip($shotRow, $shotCol);
             }
         }
 
         return $message;
     }
 
+    /**
+    * Count user shots
+    *
+    * @return void
+    */
     protected function countShots()
     {
-        if (!($this->dataManager->get('countShots') !== null)) {
+        if (!($this->dataManager->get('countShots') !== null)) { // If shot is null
             // Set session with first shot
            $this->dataManager->set('countShots', 1);
         } else {
@@ -352,29 +340,105 @@ class Grid
         }
     }
 
-    protected function hitShip($shotCoordinates, $ship, $key, $shotRow, $shotCol)
+    /**
+    * Manipulate game grid and set shot as unsuccessful
+    *
+    * @param int $shotRow
+    * @param int $shotCol
+    *
+    * @return string 
+    */
+    protected function shotMissShip($shotRow, $shotCol)
     {
-        $hitedShipCoordinate = array_search($shotCoordinates, $ship);
-                $this->dataManager->unsetValue(
-                    'shipCoordinates',
-                    $key,
-                    $hitedShipCoordinate
-                    );
-
-                // Set grid session without hitted coordiante
-                $this->dataManager->set(
-                    'gridWithShips',
-                    $this->showShipsOnGrid(
-                        $this->dataManager->get('shipCoordinates')
-                        )
-                    );
+        // Set message
+        $message = "Miss";
                 
-                // Set shot as successfully to game grid
-                $this->dataManager->set(
-                    'grid',
-                    'X',
-                    $shotRow + 1,
-                    $shotCol + 1
-                    );
+        // Set sign on game grid for unsuccessful shot
+        $this->dataManager->set(
+            'grid',
+            '-',
+            $shotRow + 1,
+            $shotCol + 1
+            );
+        return $message;
+    }
+
+    /**
+    * Manipulate game grid and set shot as successful
+    *
+    * @param string $shotCoordinates
+    * @param array $ship
+    * @param int $key
+    * @param int $shotRow
+    * @param int $shotCol
+    *
+    * @return string 
+    */
+    protected function shotHitShip(
+        $shotCoordinates, 
+        $ship, 
+        $key, 
+        $shotRow, 
+        $shotCol
+        ){
+            $message = "Hit";
+
+            $hitedShipCoordinate = array_search($shotCoordinates, $ship);
+
+            $this->dataManager->unsetValue(
+                'shipCoordinates',
+                $key,
+                $hitedShipCoordinate
+                );
+
+            // Set grid session without hitted coordiante
+            $this->dataManager->set(
+                'gridWithShips',
+                $this->showShipsOnGrid(
+                    $this->dataManager->get('shipCoordinates')
+                    )
+                );
+                    
+            // Set shot as successfully to game grid
+            $this->dataManager->set(
+                'grid',
+                'X',
+                $shotRow + 1,
+                $shotCol + 1
+                );
+
+            return $message;
+        }
+
+    /**
+    * Check if ship is sunked
+    *
+    * @return bool
+    */
+    protected function isShipSunked($ship)
+    {
+        $isSunked = false;
+        if (count($ship) == 1) { // Count current nonshoted ship coordinates
+            // Set bool as true
+            $isSunked = true;
+        }
+
+        return  $isSunked;
+    }
+
+    /**
+    * Check if game is ended and set final message
+    * 
+    * @param $shipCount
+    * 
+    * @return void
+    */
+    protected function checkGameStatus($shipCount)
+    {
+        if ($shipCount == 1) { // Check ship count
+            // Set Final Message
+            $finalMessage = "Well done! You completed the game in " . $this->dataManager->get('countShots') . " shots";
+            $this->setFinalMessage($finalMessage);
+        }
     }
 }
