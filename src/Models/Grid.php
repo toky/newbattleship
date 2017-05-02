@@ -107,34 +107,9 @@ class Grid
     */
     public function addShip($shipSize)
     {
-        // Generate random number from ship orientation 0 form column or 1 form row.
-        $shipOrientation = rand(0, 1);
+        // Generate ship coordinates
+        $shipCoordinates = $this->generateShipCoordinates($shipSize);
 
-        // Generate random first starting point for ship (row).
-        $firstCoordinateRow = rand(0, $this->row - 1);
-        $secondCoordinateRow = rand(0, ($this->row -1) - $shipSize);
-        $startingCoordinateRow = [$firstCoordinateRow, $secondCoordinateRow];
-
-        // Generate second starting point for ship (col).
-        $firstCoordinateCol = rand(0, ($this->col - 1) - $shipSize);
-        $secondCoordinateCol = rand(0, $this->col - 1);
-        $startingCoordinateCol = [$firstCoordinateCol, $secondCoordinateCol];
-        
-        $i = 0;
-        while ($i < $shipSize) {//loop for adding other coordinates to ship
-            if ($shipOrientation) {// if orientation is 1(row) decrement column
-                $row = $startingCoordinateRow[0] ;
-                $col = $startingCoordinateRow[1]+ $i;
-            } else { // if orientation is 0(column) decrement row
-                $row = $startingCoordinateCol[0]+ $i;
-                $col = $startingCoordinateCol[1] ;
-            }
-
-            // Put ship coordinates to array to store them
-            $shipCoordinates[] = $row . ';' . $col;
-            $i++;
-        }
-            
         if (empty($this->ships)) { // Cechk ships count, to add first ship without verification for overlaping
             // Add Coordinate to ships array to store him
             $this->ships[] = $shipCoordinates;
@@ -162,6 +137,46 @@ class Grid
                 $this->countShips
                 );
         }
+    }
+
+    /**
+    * Generate ship coordinates
+    *
+    * @param int $shipSize
+    *
+    * @return array $shipCoordinates
+    */
+    protected function generateShipCoordinates($shipSize)
+    {
+        // Generate random number from ship orientation 0 form column or 1 form row.
+        $shipOrientation = rand(0, 1);
+
+        // Generate random first starting point for ship (row).
+        $firstCoordinateRow = rand(0, $this->row - 1);
+        $secondCoordinateRow = rand(0, ($this->row -1) - $shipSize);
+        $startingCoordinateRow = [$firstCoordinateRow, $secondCoordinateRow];
+
+        // Generate second starting point for ship (col).
+        $firstCoordinateCol = rand(0, ($this->col - 1) - $shipSize);
+        $secondCoordinateCol = rand(0, $this->col - 1);
+        $startingCoordinateCol = [$firstCoordinateCol, $secondCoordinateCol];
+        
+        $i = 0;
+        while ($i < $shipSize) {//loop for adding other coordinates to ship
+            if ($shipOrientation) {// if orientation is 1(row) decrement column
+                $row = $startingCoordinateRow[0] ;
+                $col = $startingCoordinateRow[1]+ $i;
+            } else { // if orientation is 0(column) decrement row
+                $row = $startingCoordinateCol[0]+ $i;
+                $col = $startingCoordinateCol[1] ;
+            }
+
+            // Put ship coordinates to array to store them
+            $shipCoordinates[] = $row . ';' . $col;
+            $i++;
+        }
+
+        return $shipCoordinates;
     }
 
     /**
